@@ -76,7 +76,7 @@ def sendemail(to,content):
 
 #----------- Function to find my location -----------
 def My_Location():
-    print("Checking........")
+    ui.terminalPrint("Checking........")
     ip_add = requests.get('https://api.ipify.org').text
     url = 'https://get.geojs.io/v1/ip/geo/' + ip_add + '.json'   
     geo_q = requests.get(url)    
@@ -207,11 +207,11 @@ class MainThread(QThread):
                 r = sr.Recognizer()
                 with sr.Microphone() as source:
                     speak("Say what you want to calculate, example: 2 plus 2")
-                    print("listening......")
+                    ui.terminalPrint("listening......")
                     r.adjust_for_ambient_noise(source)
                     audio = r.listen(source)
                 my_string = r.recognize_google(audio)
-                print(my_string)
+                ui.terminalPrint(my_string)
                 def get_operator_fn(op):
                     return{
                         '+' : operator.add, #plus
@@ -260,7 +260,7 @@ class MainThread(QThread):
                 
                 except Exception as e:
                     print(e)
-                    speak("Email has not been sent due to some exception.")
+                    speak("Message has not been sent due to some exception.")
                     
         # --- Current Time ---
             elif 'the time' in self.query:
@@ -307,6 +307,7 @@ class Main(QMainWindow):
         self.ui.GoogleButton.clicked.connect(self.google)
         self.ui.YoutudeButton.clicked.connect(self.youtube)
         self.ui.WhatsappButton.clicked.connect(self.whatsapp)
+        
         
     
     
@@ -390,8 +391,7 @@ class Main(QMainWindow):
             self.ui.SpeakingGif_2.hide()
             self.ui.SleepingGif.show()
 
-        
-        
+
     def google(self):
         webbrowser.open('google.com')
         
@@ -402,7 +402,8 @@ class Main(QMainWindow):
         webbrowser.open('web.whatsapp.com')
         
     def terminalPrint(self, text):
-        self.ui.OutputTerminal.appendPlainText(text)    
+        a=str(text)
+        self.ui.OutputTerminal.appendPlainText(a)    
         
     def manualCodeFromTerminal(self):
         query = self.ui.InputTerminal.text()
@@ -418,6 +419,9 @@ class Main(QMainWindow):
                     
             else:
                 pass
+        
+        
+   
             
 app = QApplication(sys.argv)
 ui = Main()
